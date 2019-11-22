@@ -4,7 +4,6 @@ import (
 	datasql "bag/dataserver"
 	"bag/ipserver"
 	"fmt"
-	"time"
 
 	"github.com/gin-gonic/gin"
 
@@ -19,16 +18,14 @@ func main() {
 	}
 	fmt.Println("当前本机IP地址为")
 	fmt.Println(ip.String())
-	err := datasql.OpenDB()
-	if err != nil {
-		fmt.Println("数据库链接失败，请检查")
-		time.Sleep(time.Second * 10)
-		panic("失败")
-	} else {
-		r := gin.Default()
-		r.POST("/queryinfo", datasql.Querybaginfo)
-		r.POST("/submitdata", datasql.Submitdata)
-		r.Run(":9000")
-	}
+	r := gin.Default()
+	r.POST("/queryinfo", datasql.Querybaginfo)
+	r.POST("/submitdata", datasql.Submitdata)
+	r.GET("/", awstt)
+	r.Run(":81")
+
+}
+func awstt(c *gin.Context) {
+	c.Writer.WriteString("hellobhy")
 
 }
